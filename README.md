@@ -1,2 +1,2 @@
-## RUST Servers Services Apps - Manning
+## RUST Servers Services Apps / CH02 - Manning
 ---
