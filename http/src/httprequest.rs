@@ -73,7 +73,7 @@ impl From<String> for HttpRequest {
                 let (key, value) = process_header_line(line);
                 parsed_headers.insert(key, value);
                 // if it is a blank line, do nothing
-            } else if line.len() == 0 {
+            } else if line.is_empty() {
                 // If none of these, treat it as message body
             } else {
                 parsed_msg_body = line;
