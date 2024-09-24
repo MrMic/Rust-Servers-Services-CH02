@@ -115,8 +115,61 @@ impl<'a> From<HttpResponse<'a>> for String {
     }
 }
 
-// *  TEST: ═════════════════════════════════════════════════════════
+// * TEST: ═════════════════════════════════════════════════════════
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_response_struct_creation_200() {
+        let actual_response = HttpResponse::new("200", None, Some("Item was shipped".into()));
+        let expected_response = HttpResponse {
+            version: "HTTP/1.1",
+            status_code: "200",
+            status_text: "OK",
+            headers: {
+                let mut h = HashMap::new();
+                h.insert("Content-Type", "text/html");
+                Some(h)
+            },
+            body: Some("Item was shipped".into()),
+        };
+        assert_eq!(actual_response, expected_response);
+    }
+
+    #[test]
+    fn test_response_struct_creation_404() {
+        let actual_response = HttpResponse::new("404", None, Some("Item was shipped".into()));
+        let expected_response = HttpResponse {
+            version: "HTTP/1.1",
+            status_code: "404",
+            status_text: "Not Found",
+            headers: {
+                let mut h = HashMap::new();
+                h.insert("Content-Type", "text/html");
+                Some(h)
+            },
+            body: Some("Item was shipped".into()),
+        };
+        assert_eq!(actual_response, expected_response);
+    }
+
+    #[test]
+    fn test_http_response_creation() {
+        let response_expected = HttpResponse {
+            version: "HTTP/1.1",
+            status_code: "404",
+            status_text: "Not Found",
+            headers: {
+                let mut h = HashMap::new();
+                h.insert("Content-Type", "text/html");
+                Some(h)
+            },
+            body: Some("Item was shipped".into()),
+        };
+        let http_string: String = response_expected.into();
+        let response_actuel = "HTTP/1.1 404 Not Found\r\nContent-Type: text/html\r\nContent-Length: 16\r\n\r\nItem was shipped";
+
+        assert_eq!(http_string, response_actuel);
+    }
 }
